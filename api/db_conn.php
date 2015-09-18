@@ -1,6 +1,6 @@
 <?php
 	try{
-		$db = new PDO("sqlite:/home/cbdev/dev/taskboard/taskboard.db3");
+		$db = new PDO("sqlite:/var/www/taskboard/taskboard.db3");
 	}
 	catch(PDOException $e){
 		exit("Failed to connect to database: ".$e->getMessage());

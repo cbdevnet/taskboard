@@ -1,5 +1,5 @@
 var api = {
-	base : "http://localhost/taskboard/api/",
+	base : "api/",
 
 	async:function(module, endpoint, payload, completion, error){
 		var req = ajax.asyncPost(api.base + module + "/" + endpoint + "/", JSON.stringify(payload), function(req){

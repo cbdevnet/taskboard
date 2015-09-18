@@ -21,7 +21,7 @@ var gui = {
 	sections:{
 		clear:function(){
 			gui.elem("section-filter").innerHTML = "";
-			gui.elem("section-filter").textContent = "Filter";
+			gui.elem("section-filter").textContent = "Board";
 		},
 
 		create:function(id, name){
