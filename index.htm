@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Taskboard</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="static/board.css" />
+		<meta name="description" content="Taskboard - Manage your TODO-Lists" />
+		<meta name="keywords" content="something should probably go here" />
+		<meta name="robots" content="noindex,nofollow" />
+	</head>
+	<body onload="board.init();">
+		<div id="wrapper">
+			<h1 id="title-head">TaskBoard</h1>
+			<div id="board">
+				<div id="section-filter">
+				</div>
+				<div id="bins">
+				</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="static/ajax.js"></script>
+		<script type="text/javascript" src="static/logger.js"></script>
+		<script type="text/javascript" src="static/api.js"></script>
+		<script type="text/javascript" src="static/gui.js"></script>
+		<script type="text/javascript" src="static/board.js"></script>
+	</body>
+</html>
