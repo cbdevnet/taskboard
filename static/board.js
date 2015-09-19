@@ -33,8 +33,14 @@ var board = {
 		var section = event.target.getAttribute("data-id");
 
 		if(event.shiftKey){
-			board.filter.push(section);
-			event.target.className = "section active";
+			if(board.filter.indexOf(section) < 0){
+				board.filter.push(section);
+				event.target.className = "section active";
+			}
+			else{
+				board.filter.splice(board.filter.indexOf(section), 1);
+				event.target.className = "section";
+			}
 
 			if(board.filter.length > 1){
 				gui.items.additions(false);
