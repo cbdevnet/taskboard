@@ -7,7 +7,7 @@ run it on localhost or use external authentication mechanisms such as
 those most probably provided by your http server.
 
 ## Features
-taskboard allows you to organize your tasks with aset of *bins*, between
+**taskboard** allows you to organize your tasks with a set of *bins*, between
 which you can freely move them by drag-and-drop.
 
 Different *boards* (all with the same set of *bins*) may be used
