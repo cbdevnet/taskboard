@@ -27,7 +27,36 @@ var gui = {
 		create:function(id, name){
 			var node = gui.create("span", name, {"class":"section", "data-id":id});
 			node.onclick = board.toggleSection;
+			node.ondragover = gui.sections.drag;
+			node.ondrop = gui.sections.drop;
 			return node;
+		},
+
+		drop:function(ev){
+			ev.preventDefault();
+			var data = ev.dataTransfer.getData("text");
+			var section = ev.target.getAttribute("data-id");
+			if(!section){
+				console.log("Invalid drop target, no section id found");
+				return;
+			}
+
+			board.items.forEach(function(item){
+				if(item.item_id == data){
+					api.async("item", "move", {"item":item.item_id, "section":section}, function(data){
+						if(data.dbinfo[1]){
+							window.alert("Failed to update section: "+ JSON.stringify(data.dbinfo));
+							return;
+						}
+						item.item_section = section;
+						gui.refreshItems();
+					}, logger.console);
+				}
+			});
+		},
+
+		drag:function(ev){
+			ev.preventDefault();
 		}
 	},
 

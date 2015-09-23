@@ -28,6 +28,15 @@
 		return $rv;
 	}
 
+	function moveItemSection($item, $section){
+		global $db;
+		$rv = array();
+		$STMT = $db->prepare("UPDATE items SET item_section = :section WHERE item_id = :item;");
+		$res = $STMT->execute(array(":section"=>$section, ":item"=>$item));
+		$rv["dbinfo"] = $db->errorInfo();
+		return $rv;
+	}
+
 	function createItem($name, $section, $bin){
 		global $db;
 		$rv = array();
