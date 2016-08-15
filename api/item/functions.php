@@ -41,11 +41,20 @@
 		global $db;
 		$rv = array();
 		$STMT = $db->prepare("INSERT INTO items (item_name, item_section, item_bin) VALUES (:name, :section, :bin);");
-		$rv["insert"] = $STMT->execute(array(":name"=>$name, ":section"=>$section, ":bin"=>$bin));
+		$rv["insert"] = $STMT->execute(array(":name" => $name, ":section" => $section, ":bin" => $bin));
 		$rv["dbinfo"] = $db->errorInfo();
 		if($rv["insert"] === TRUE){
 			$rv["item"] = fetchItems("item_id = " . $db->lastInsertId())["data"][0];
 		}
+		return $rv;
+	}
+
+	function editItem($item, $text){
+		global $db;
+		$rv = array();
+		$STMT = $db->prepare("UPDATE items SET item_name = :name WHERE item_id = :item;");
+		$rv["update"] = $STMT->execute(array(":name" => $text, ":item" => $item));
+		$rv["dbinfo"] = $db->errorInfo();
 		return $rv;
 	}
 ?>

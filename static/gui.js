@@ -124,6 +124,7 @@ var gui = {
 		node:function(id, content){
 			var node = gui.create("span", content, {"class":"item", "data-id":id, "draggable":"true"});
 			node.ondragstart = gui.items.drag;
+			node.ondblclick = gui.items.startEditor;
 			return node;
 		},
 
@@ -132,8 +133,15 @@ var gui = {
 		},
 
 		startEditor:function(ev){
+			var resetContent = ev.target.textContent;
+			var editContent = "";
+			var editType = "create";
+			if(ev.target.className != "add-item"){
+				editType = "edit";
+				editContent = resetContent;
+			}
 			ev.target.innerHTML = "";
-			var editNode = gui.create("input", undefined, {"type":"text", "data-id":ev.target.getAttribute("data-id")});
+			var editNode = gui.create("input", undefined, {"type":"text", "value":editContent, "data-original":resetContent, "data-type":editType, "data-id":ev.target.getAttribute("data-id")});
 			editNode.onkeydown = gui.items.editorKey;
 			ev.target.appendChild(editNode);
 			editNode.focus();
@@ -141,21 +149,43 @@ var gui = {
 		
 		editorKey:function(ev){
 			if(ev.keyCode == 13 && ev.target.value){
-				board.createItem(board.filter[0], ev.target.getAttribute("data-id"), ev.target.value, function(success){
-					if(success){
-						var add = ev.target.parentNode;
-						add.innerHTML = "";
-						add.innerText = "+";
-					}
-					else{
-						window.alert("Failed to create item");
-					}
-				});
+				if(ev.target.getAttribute("data-type") == "create"){
+					board.createItem(board.filter[0], ev.target.getAttribute("data-id"), ev.target.value, function(success){
+						if(success){
+							var add = ev.target.parentNode;
+							add.innerHTML = "";
+							add.innerText = "+";
+						}
+						else{
+							window.alert("Failed to create item");
+						}
+					});
+				}
+				else if(ev.target.getAttribute("data-type") == "edit"){
+					api.async("item", "edit", {"item":ev.target.getAttribute("data-id"), "text":ev.target.value}, function(data){
+						if(data.dbinfo[1]){
+							window.alert("Failed to update item text: "+ JSON.stringify(data.dbinfo));
+							return;
+						}
+						var content = ev.target.value;
+						board.items.forEach(function(item){
+							if(item.item_id == ev.target.getAttribute("data-id")){
+								item.item_name = content;
+							}
+						});
+						var parentNode = ev.target.parentNode;
+						parentNode.innerHTML = "";
+						parentNode.innerText = content;
+					}, function(error){
+						window.alert("Failed to update item: " + error);
+					});
+				}
 			}
 			else if(ev.keyCode == 27 || (ev.keyCode == 13 && !ev.target.value)){
-				var add = ev.target.parentNode;
-				add.innerHTML = "";
-				add.innerText = "+";
+				var content = ev.target.getAttribute("data-original");
+				var parentNode = ev.target.parentNode;
+				parentNode.innerHTML = "";
+				parentNode.innerText = content;
 			}
 		},
 
