@@ -51,6 +51,13 @@ html {
 	font-style:italic;
 }
 
+.bin .explanation {
+	display:block;
+	text-align:center;
+	font-style:italic;
+	color:#966;
+}
+
 .item-wrapper .item, .bin .add-item {
 	-moz-user-select:none;
 	-webkit-user-select:none;
@@ -71,4 +78,8 @@ html {
 .item-wrapper .item:hover, .bin .add-item:hover {
 	background-color:#bcc;
 	cursor:pointer;
+}
+
+.trash.bin {
+	background-color:#faa;
 }

@@ -57,4 +57,13 @@
 		$rv["dbinfo"] = $db->errorInfo();
 		return $rv;
 	}
+
+	function deleteItem($item){
+		global $db;
+		$rv = array();
+		$STMT = $db->prepare("DELETE FROM items WHERE item_id = :item;");
+		$rv["delete"] = $STMT->execute(array(":item" => $item));
+		$rv["dbinfo"] = $db->errorInfo();
+		return $rv;
+	}
 ?>

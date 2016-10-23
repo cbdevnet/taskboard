@@ -18,6 +18,43 @@ var gui = {
 		return node;
 	},
 
+	trash:{
+		create:function(){
+			var node = gui.create("div", undefined, {"class":"trash bin", "data-id":-1});
+			node.appendChild(gui.create("span", "Trash", {"class":"title"}));
+			node.appendChild(gui.create("span", "Drag here to delete", {"class":"explanation"}));
+			node.ondragover = gui.trash.drag;
+			node.ondrop = gui.trash.drop;
+			return node;
+		},
+
+		drop:function(ev){
+			ev.preventDefault();
+			var data = ev.dataTransfer.getData("text");
+			//this may actually require a synchronous api call
+			//we might get away with this because a successful delete forces a relayout
+			//it is however kind of unsafe.
+			api.async("item", "delete", {"item":data}, function(res){
+				if(res.dbinfo[1]){
+					window.alert("Failed to delete item: " + JSON.stringify(res.dbinfo));
+					return;
+				}
+				//iterate explicitly because this actually modifies the array
+				for(i = 0; i < board.items.length; i++){
+					if(board.items[i].item_id == data){
+						board.items.splice(i, 1);
+						gui.refreshItems();
+						break;
+					}
+				}
+			}, logger.console);
+		},
+
+		drag:function(ev){
+			ev.preventDefault();
+		}
+	},
+
 	sections:{
 		clear:function(){
 			gui.elem("section-filter").innerHTML = "";
@@ -45,7 +82,7 @@ var gui = {
 				if(item.item_id == data){
 					api.async("item", "move", {"item":item.item_id, "section":section}, function(data){
 						if(data.dbinfo[1]){
-							window.alert("Failed to update section: "+ JSON.stringify(data.dbinfo));
+							window.alert("Failed to update section: " + JSON.stringify(data.dbinfo));
 							return;
 						}
 						item.item_section = section;
@@ -209,6 +246,7 @@ var gui = {
 		board.bins.forEach(function(bin){
 			gui.elem("bins").appendChild(gui.bins.create(bin.bin_id, bin.bin_name));
 		});
+		gui.elem("bins").appendChild(gui.trash.create());
 	},
 
 	refreshItems:function(){

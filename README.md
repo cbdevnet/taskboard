@@ -15,6 +15,22 @@ to keep track of tasks within different contexts.
 Boards can be shown in combination with eachother by **shift-clicking**
 their selectors.
 
+## Usage
+
+Click a board selector to show the items on a board.
+
+Shift-click multiple board selectors to see all items on the boards.
+
+Click the `+` at the bottom of a bin to add an item.
+
+Double-click an item to edit it.
+
+Drag an item to a different bin to move it there.
+
+Drag an item to a board selector to move it to that board (it will stay in the same bin).
+
+Drag an item to the `Trash` bin to delete it.
+
 ## Setup
 * Make sure you have the SQLite3 PDO driver for PHP installed
 * Clone the repo into a directory served by your http daemon
